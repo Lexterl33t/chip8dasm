@@ -3,12 +3,19 @@
 #include "argparser.h"
 #include "../logging/logger.h"
 
+
+const char *TYPE[] = {
+  "Integer",
+  "String",
+  "Boolean"
+};
+
 /*
 * Parser constructor
 * TODO: Documentation new_parser 
 */
 
-argument_parser_t *new_parser(char *description, char *help_bottom_text) {
+argument_parser_t *new_parser(char *project_name, char *description, char *help_bottom_text, char **argv, int argc) {
 
   if (!description || !help_bottom_text) {
     critical_error("(argparser::new) : description and help_bottom_text can't be empty");  
@@ -32,15 +39,17 @@ argument_parser_t *new_parser(char *description, char *help_bottom_text) {
   argument->help = NULL;
   argument->next = NULL;
 
+  parser->project_name = project_name;
   parser->description = description;
   parser->help_bottom_text = help_bottom_text;
   parser->lhead = argument;
+
 
   return parser;
 }
 
 
-argument_t *add_argument(argument_parser_t *ctx, argument_type_t arg_type, char *command_name, char *help_text) { 
+argument_t *add_argument(argument_parser_t *ctx, argument_type_t arg_type, char *command_name, char *help_text, bool optional) { 
   
   if (!ctx || !command_name || !help_text) { 
     // TODO: create method to free linked list
@@ -52,13 +61,15 @@ argument_t *add_argument(argument_parser_t *ctx, argument_type_t arg_type, char 
 
   if (!new_argument) {
     free(ctx);
+
     critical_error("(argparser::add_argument) : Error allocation argument_t");
   }
 
   new_argument->command_name = command_name;
   new_argument->help = help_text;
   new_argument->type = arg_type;
-  
+  new_argument->optional = optional;
+
   new_argument = push_argument(ctx, new_argument);
 
   return new_argument;
@@ -86,6 +97,23 @@ void print_args(argument_parser_t *ctx) {
 
   FOREACH_ARGUMENT(it, {
     if (it->command_name)
-      printf("Command name: %s, type: %d\n", it->command_name, it->type);
+      printf("Command name: %s, type: %d, value: %d\n", it->command_name, it->type, it->data.integer);
   });
+}
+
+
+void print_help(argument_parser_t *ctx) {
+  
+  argument_t *it = ctx->lhead;
+  
+  printf("[ %s ]\n", ctx->project_name);
+  FOREACH_ARGUMENT(it, {
+    if (it->command_name)
+      printf("%s : %s : %s\n", it->command_name, it->help, TYPE_STR(it->type));
+  })
+}
+
+
+argument_parser_t *parse_args(argument_parser_t *ctx) {
+   
 }
