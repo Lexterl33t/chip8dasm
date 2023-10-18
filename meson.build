@@ -7,7 +7,7 @@ inc = include_directories('src')
 executable('chip8dasm',
            ['src/main.c',
             'src/argparser/argparser.c',
-            'src/argparser/errors.c',
+            'src/utils/utils.c'
             ],
            include_directories: inc)
 
