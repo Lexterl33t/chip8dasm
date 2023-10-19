@@ -4,6 +4,7 @@
 
 #include "argparser/argparser.h"
 #include "argparser/errors.h"
+#include "rom_parsing/rom_parser.h"
 
 int main(int argc, char **argv) {
 
@@ -21,6 +22,12 @@ int main(int argc, char **argv) {
   if (argument_exist(parser, "--disassemble")) {
 
     argument_t *binary_path = get_argument(parser, "--disassemble");
+
+    printf("File name: %s\n", binary_path->data.str);
+    rom_t *rom_parser = new_rom(binary_path->data.str, BINARY_ROM);
+    open_rom(rom_parser);
+    parse_rom(rom_parser);
+
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");

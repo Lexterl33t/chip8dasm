@@ -191,6 +191,7 @@ argument_t *set_argument(argument_t *argument, char *data) {
     argument->data.str = data;
     break;
   case BOOL:
+    to_lower(data);
     if (!strncmp(data, "true", 4))
       argument->data.boolean = true;
     else if (!strncmp(data, "false", 5))
@@ -236,7 +237,6 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
 
     if (search_argument) {
       if ((i + 1) < ctx->argc) {
-        to_lower(ctx->argv[i + 1]);
         set_argument(search_argument, ctx->argv[++i]);
       } else {
         print_argument_error(search_argument, EMPTY_COMMAND_ARGUMENT);
