@@ -1,6 +1,7 @@
 #pragma once
 
+typedef enum {
+  INVALID_ARGUMENT_TYPE,
+  EMPTY_COMMAND_ARGUMENT
 
-enum PARSING_ERROR {
-  INVALID_ARGUMENT,
-};
+} PARSING_ERROR;

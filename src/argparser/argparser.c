@@ -3,6 +3,7 @@
 
 #include "../logging/logger.h"
 #include "argparser.h"
+#include "errors.h"
 
 const char *TYPE[] = {"Integer", "String", "Boolean"};
 
@@ -144,8 +145,20 @@ argument_t *get_argument(argument_parser_t *ctx, char *command_name) {
   return NULL;
 }
 
-argument_t *set_argument(argument_parser_t *ctx, argument_t *argument,
-                         char *data) {
+void print_argument_error(argument_t *argument, PARSING_ERROR error) {
+  switch (error) {
+  case INVALID_ARGUMENT_TYPE:
+    fprintf(stderr, "Invalid argument type for %s the type must be %s",
+            argument->command_name, TYPE_STR(argument->type));
+    exit(0);
+  case EMPTY_COMMAND_ARGUMENT:
+    fprintf(stderr, "Command %s must %s argument", argument->command_name,
+            TYPE_STR(argument->type));
+    exit(0);
+  }
+}
+
+argument_t *set_argument(argument_t *argument, char *data) {
 
   if (!argument || !data) {
     critical_error(
@@ -157,7 +170,7 @@ argument_t *set_argument(argument_parser_t *ctx, argument_t *argument,
     if (is_integer(data)) {
       argument->data.integer = atoi(data);
     } else {
-      print_help(ctx);
+      print_argument_error(argument, INVALID_ARGUMENT_TYPE);
     }
     break;
   case STRING:
@@ -169,7 +182,7 @@ argument_t *set_argument(argument_parser_t *ctx, argument_t *argument,
     else if (!strncmp(data, "false", 5))
       argument->data.boolean = false;
     else
-      print_help(ctx);
+      print_argument_error(argument, INVALID_ARGUMENT_TYPE);
     break;
   }
 
@@ -188,9 +201,19 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
     argument_t *search_argument = get_argument(ctx, str);
 
     if (search_argument) {
-      set_argument(ctx, search_argument, ctx->argv[++i]);
+      if ((i + 1) < ctx->argc)
+        set_argument(search_argument, ctx->argv[++i]);
+      else
+        print_argument_error(search_argument, EMPTY_COMMAND_ARGUMENT);
     }
   }
 
+  argument_t *it = ctx->lhead;
+
+  // TODO: Iterate argument linked list and check if !optional argument are set
+  // or no
+  FOREACH_ARGUMENT(it, {
+
+                       })
   return ctx;
 }

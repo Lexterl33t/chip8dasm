@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../utils/utils.h"
+#include "errors.h"
 
 #define FOREACH_ARGUMENT(argument, code)                                       \
   while (argument) {                                                           \
@@ -54,5 +55,5 @@ void print_args(argument_parser_t *ctx);
 void print_help(argument_parser_t *ctx);
 argument_parser_t *parse_args(argument_parser_t *ctx);
 argument_t *get_argument(argument_parser_t *ctx, char *command_name);
-argument_t *set_argument(argument_parser_t *ctx, argument_t *argument,
-                         char *data);
+argument_t *set_argument(argument_t *argument, char *data);
+void print_argument_error(argument_t *argument, PARSING_ERROR error);
