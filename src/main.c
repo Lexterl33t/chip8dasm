@@ -1,4 +1,5 @@
 
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -27,7 +28,6 @@ int main(int argc, char **argv) {
     open_rom(rom_parser);
     parse_rom(rom_parser);
 
-    printf("Num bytes: %d\n", rom_parser->num_bytes);
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");
@@ -39,7 +39,6 @@ int main(int argc, char **argv) {
       } else {
         print_argument_error(view_type, INVALID_CHOICE_ARGUMENT);
       }
-
     } else {
       // linear view
       printf("Tu as choisis wola la linear view");
