@@ -148,12 +148,15 @@ argument_t *get_argument(argument_parser_t *ctx, char *command_name) {
 void print_argument_error(argument_t *argument, PARSING_ERROR error) {
   switch (error) {
   case INVALID_ARGUMENT_TYPE:
-    fprintf(stderr, "Invalid argument type for %s the type must be %s",
+    fprintf(stderr, "Invalid argument type for %s the type must be %s\n",
             argument->command_name, TYPE_STR(argument->type));
     exit(0);
   case EMPTY_COMMAND_ARGUMENT:
-    fprintf(stderr, "Command %s must %s argument", argument->command_name,
+    fprintf(stderr, "Command %s must %s argument\n", argument->command_name,
             TYPE_STR(argument->type));
+    exit(0);
+  case INVALID_ARGUMENT:
+    fprintf(stderr, "Unknown command");
     exit(0);
   }
 }
@@ -205,6 +208,8 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
         set_argument(search_argument, ctx->argv[++i]);
       else
         print_argument_error(search_argument, EMPTY_COMMAND_ARGUMENT);
+    } else {
+      print_argument_error(search_argument, INVALID_ARGUMENT);
     }
   }
 
