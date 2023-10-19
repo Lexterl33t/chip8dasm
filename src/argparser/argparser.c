@@ -36,6 +36,8 @@ argument_parser_t *new_parser(char *project_name, char *description,
   argument->command_name = NULL;
   argument->help = NULL;
   argument->next = NULL;
+  argument->optional = true;
+  argument->is_set = true;
 
   parser->project_name = project_name;
   parser->description = description;
@@ -68,6 +70,7 @@ argument_t *add_argument(argument_parser_t *ctx, argument_type_t arg_type,
   new_argument->help = help_text;
   new_argument->type = arg_type;
   new_argument->optional = optional;
+  new_argument->is_set = false;
 
   new_argument = push_argument(ctx, new_argument);
 
@@ -158,6 +161,9 @@ void print_argument_error(argument_t *argument, PARSING_ERROR error) {
   case INVALID_ARGUMENT:
     fprintf(stderr, "Unknown command");
     exit(0);
+  case REQUIRED_COMMAND_NOT_EXIST:
+    fprintf(stderr, "Command %s is required\n", argument->command_name);
+    exit(0);
   }
 }
 
@@ -189,6 +195,7 @@ argument_t *set_argument(argument_t *argument, char *data) {
     break;
   }
 
+  argument->is_set = true;
   return argument;
 }
 
@@ -218,7 +225,11 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
   // TODO: Iterate argument linked list and check if !optional argument are set
   // or no
   FOREACH_ARGUMENT(it, {
-
-                       })
+    if (it->command_name && !it->optional) {
+      if (!it->is_set) {
+        print_argument_error(it, REQUIRED_COMMAND_NOT_EXIST);
+      }
+    }
+  })
   return ctx;
 }

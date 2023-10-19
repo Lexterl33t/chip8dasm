@@ -26,6 +26,7 @@ typedef struct argument_s {
   argument_type_t type;
   struct argument_s *next;
   bool optional;
+  bool is_set;
 
   union {
     int integer;

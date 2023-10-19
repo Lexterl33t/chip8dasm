@@ -10,8 +10,12 @@ int main(int argc, char **argv) {
 
   add_argument(parser, INT, "--test", "this is test int command", true);
   add_argument(parser, STRING, "Issoufre", "lalalal", true);
+  add_argument(parser, BOOL, "--required-command",
+               "ceci est la commande requit", false);
 
   parse_args(parser);
 
-  print_args(parser);
+  argument_t *require_command = get_argument(parser, "--required-command");
+
+  printf("Value: %d", require_command->data.boolean);
 }
