@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -212,10 +213,12 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
     argument_t *search_argument = get_argument(ctx, str);
 
     if (search_argument) {
-      if ((i + 1) < ctx->argc)
+      if ((i + 1) < ctx->argc) {
+        to_lower(ctx->argv[i + 1]);
         set_argument(search_argument, ctx->argv[++i]);
-      else
+      } else {
         print_argument_error(search_argument, EMPTY_COMMAND_ARGUMENT);
+      }
     } else {
       print_argument_error(search_argument, INVALID_ARGUMENT);
     }
