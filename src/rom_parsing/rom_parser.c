@@ -38,12 +38,26 @@ int open_rom(rom_t *rom) {
   return rom->fd;
 }
 
+/*
+int rom_count_instruction(rom_t *rom) {
+
+  uint8_t *opcodes = rom->rom_bytes;
+
+  while ((opcodes - rom->rom_bytes) < rom->num_bytes) {
+    rom->number_instr += 1;
+    opcodes += 2;
+  }
+
+  printf("Num instruction => %d\n", rom->number_instr);
+  return rom->number_instr;
+}*/
+
 rom_t *parse_rom(rom_t *rom) {
 
-  printf("type rom: %d\n", rom->type_rom);
   switch (rom->type_rom) {
   case BINARY_ROM:
-    rom->rom_bytes = parse_binary_rom(rom->fd);
+    rom->rom_bytes = parse_binary_rom(rom->fd, &(rom->num_bytes));
+    rom->number_instr = (rom->num_bytes / 2);
     break;
   case HEX_ROM:
     break;

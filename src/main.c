@@ -23,11 +23,11 @@ int main(int argc, char **argv) {
 
     argument_t *binary_path = get_argument(parser, "--disassemble");
 
-    printf("File name: %s\n", binary_path->data.str);
     rom_t *rom_parser = new_rom(binary_path->data.str, BINARY_ROM);
     open_rom(rom_parser);
     parse_rom(rom_parser);
 
+    printf("Num bytes: %d\n", rom_parser->num_bytes);
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");
