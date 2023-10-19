@@ -166,6 +166,9 @@ void print_argument_error(argument_t *argument, PARSING_ERROR error) {
   case REQUIRED_COMMAND_NOT_EXIST:
     fprintf(stderr, "Command %s is required\n", argument->command_name);
     exit(0);
+  case INVALID_CHOICE_ARGUMENT:
+    fprintf(stderr, "Invalid argument value for %s\n", argument->command_name);
+    exit(0);
   }
 }
 
@@ -201,6 +204,25 @@ argument_t *set_argument(argument_t *argument, char *data) {
   return argument;
 }
 
+bool argument_exist(argument_parser_t *ctx, char *command_name) {
+
+  if (!ctx || !command_name) {
+    critical_error(
+        "(argparser::argument_exist) : ctx and command_name can't be NULL");
+  }
+
+  argument_t *it = ctx->lhead;
+
+  FOREACH_ARGUMENT(it, {
+    if (it->command_name && !strcmp(command_name, it->command_name) &&
+        it->is_set) {
+      return true;
+    }
+  })
+
+  return false;
+}
+
 argument_parser_t *parse_args(argument_parser_t *ctx) {
 
   for (int i = 1; i < ctx->argc; ++i) {
@@ -226,8 +248,6 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
 
   argument_t *it = ctx->lhead;
 
-  // TODO: Iterate argument linked list and check if !optional argument are set
-  // or no
   FOREACH_ARGUMENT(it, {
     if (it->command_name && !it->optional) {
       if (!it->is_set) {
@@ -246,5 +266,6 @@ void free_parser(argument_parser_t *ctx) {
 
   argument_t *node;
 
-  FREE_ARGUMENT(node, ctx)
+  FREE_ARGUMENTS(node, ctx);
+  free(ctx);
 }

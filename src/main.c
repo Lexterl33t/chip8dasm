@@ -1,24 +1,42 @@
 
 #include <stdio.h>
+#include <string.h>
 
 #include "argparser/argparser.h"
+#include "argparser/errors.h"
 
 int main(int argc, char **argv) {
 
-  argument_parser_t *parser =
-      new_parser("My project", "Hello, world", "kaka", argv, argc);
+  argument_parser_t *parser = new_parser(
+      "Chip8Dasm", "Chip8 disassembler from scratch @Lxt3h", "", argv, argc);
 
-  add_argument(parser, INT, "--test", "this is test int command", true);
-  add_argument(parser, STRING, "Issoufre", "lalalal", true);
-  add_argument(parser, BOOL, "--required-command",
-               "ceci est la commande requit", false);
+  add_argument(parser, STRING, "--disassemble",
+               "Take ROM binary and print instructions", true);
+
+  add_argument(parser, STRING, "--show-type",
+               "Take <graph, linear> string to get type view", true);
 
   parse_args(parser);
 
-  argument_t *require_command = get_argument(parser, "--required-command");
+  if (argument_exist(parser, "--disassemble")) {
 
-  printf("Value: %d", require_command->data.boolean);
+    argument_t *binary_path = get_argument(parser, "--disassemble");
+    if (argument_exist(parser, "--show-type")) {
 
-  print_args(parser);
+      argument_t *view_type = get_argument(parser, "--show-type");
+
+      if (!strncmp(view_type->data.str, "linear", strlen("linear"))) {
+        printf("Tu as choisis la linear view");
+      } else if (!strncmp(view_type->data.str, "graph", strlen("graph"))) {
+        printf("Tu as choisis la graph view");
+      } else {
+        print_argument_error(view_type, INVALID_CHOICE_ARGUMENT);
+      }
+
+    } else {
+      // linear view
+      printf("Tu as choisis wola la linear view");
+    }
+  }
   free_parser(parser);
 }
