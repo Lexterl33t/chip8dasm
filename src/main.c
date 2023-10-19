@@ -18,4 +18,6 @@ int main(int argc, char **argv) {
   argument_t *require_command = get_argument(parser, "--required-command");
 
   printf("Value: %d", require_command->data.boolean);
+
+  free_parser(parser);
 }

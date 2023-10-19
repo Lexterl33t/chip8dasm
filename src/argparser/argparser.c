@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "../logging/logger.h"
@@ -232,4 +233,15 @@ argument_parser_t *parse_args(argument_parser_t *ctx) {
     }
   })
   return ctx;
+}
+
+void free_parser(argument_parser_t *ctx) {
+
+  if (!ctx) {
+    critical_error("(argparser::free_parser) : ctx can't be NULL");
+  }
+
+  argument_t *node;
+
+  FREE_ARGUMENT(node, ctx)
 }

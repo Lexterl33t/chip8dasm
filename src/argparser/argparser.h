@@ -9,6 +9,15 @@
     argument = argument->next;                                                 \
   }
 
+#define FREE_ARGUMENT(node, head)                                              \
+  while (head->lhead) {                                                        \
+    node = head->lhead;                                                        \
+    head->lhead = node->next;                                                  \
+    free(node);                                                                \
+  }                                                                            \
+                                                                               \
+  free(head);
+
 #define TYPE_STR(t) TYPE[t]
 
 extern const char *TYPE[];
@@ -58,3 +67,4 @@ argument_parser_t *parse_args(argument_parser_t *ctx);
 argument_t *get_argument(argument_parser_t *ctx, char *command_name);
 argument_t *set_argument(argument_t *argument, char *data);
 void print_argument_error(argument_t *argument, PARSING_ERROR error);
+void free_parser(argument_parser_t *ctx);
