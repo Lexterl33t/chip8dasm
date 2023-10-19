@@ -53,7 +53,7 @@ argument_t *add_argument(argument_parser_t *ctx, argument_type_t arg_type,
   if (!ctx || !command_name || !help_text) {
     // TODO: create method to free linked list
     critical_error("(argparser::add_argument) : ctx, command_name, help_text, "
-                   "arg_type can't be empty");
+                   "can't be NULL");
   }
 
   argument_t *new_argument = malloc(sizeof(argument_t));
