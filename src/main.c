@@ -19,5 +19,6 @@ int main(int argc, char **argv) {
 
   printf("Value: %d", require_command->data.boolean);
 
+  print_args(parser);
   free_parser(parser);
 }
