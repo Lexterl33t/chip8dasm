@@ -9,7 +9,11 @@ executable('chip8dasm',
             'src/argparser/argparser.c',
             'src/utils/utils.c',
             'src/rom_parsing/rom_parser.c',
-            'src/rom_parsing/binary_rom_parser.c'
+            'src/rom_parsing/binary_rom_parser.c',
+            'src/disassembler/decoder.c',
+            'src/disassembler/basic_block.c',
+            'src/disassembler/instruction.c',
+            'src/disassembler/instructions.c'
             ],
            include_directories: inc)
 
