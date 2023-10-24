@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 
     printf("Opcode => %d\n", TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[4]));
     instruction_t instr = get_instruction_by_nibble(
-        TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[0]));
+        TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[1]));
 
     printf("Instruction name => %s\n", instr.opcode_str);
     if (argument_exist(parser, "--show-type")) {

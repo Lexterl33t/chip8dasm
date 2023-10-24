@@ -43,21 +43,25 @@ const instruction_t INSTRUCTIONS[] = {
     {.opcode_str = "ld", .nibble = 0x000F, .is_duplicate = true},
     {.opcode_str = "ld", .nibble = 0x000F, .is_duplicate = true},
     {.opcode_str = "ld", .nibble = 0x000F, .is_duplicate = true},
-};
+    {.opcode_str = "nil", .nibble = 0xFFFF, .is_duplicate = false}};
 
 instruction_t get_instruction_by_nibble(int16_t opcode) {
 
   uint8_t len_instructions_table =
       sizeof(INSTRUCTIONS) / sizeof(INSTRUCTIONS[0]);
 
+  instruction_t instr;
+
   for (uint8_t i = 0; i < len_instructions_table; ++i) {
 
-    instruction_t instr = INSTRUCTIONS[i];
+    instr = INSTRUCTIONS[i];
 
     uint8_t nibble = (opcode & 0xF000) >> 12;
     uint8_t lsb_nibble = opcode & 0x000F;
+    uint8_t byte_msb = opcode & 0x00FF;
 
     printf("Nibble => %d\n", nibble);
+    printf("Opcode: %d\n", opcode == instr.nibble);
     if (nibble == 0 && (opcode == instr.nibble)) {
       return instr;
     } else if (nibble == 8) {
@@ -72,9 +76,41 @@ instruction_t get_instruction_by_nibble(int16_t opcode) {
       case 0xE:
         return instr;
       default:
+        critical_error(
+            "(instructions::get_instruction_by_nibble) : Unknow 0xE msb byte");
       }
+    } else if (nibble == 0xE && (opcode == instr.nibble)) {
+      switch (byte_msb) {
+      case 0x9E:
+      case 0xA1:
+        return instr;
+      default:
+        critical_error(
+            "(instructions::get_instruction_by_nibble) : Unknow 0xE msb byte");
+      }
+    } else if (nibble == 0xF && (opcode == instr.nibble)) {
+      switch (byte_msb) {
+      case 0x07:
+      case 0x0A:
+      case 0x15:
+      case 0x18:
+      case 0x1E:
+      case 0x29:
+      case 0x33:
+      case 0x55:
+      case 0x65:
+        return instr;
+      default:
+        critical_error(
+            "(instructions::get_instruction_by_nibble) : Unknow 0xE msb byte");
+      }
+    } else if (nibble == instr.nibble) {
+      return instr;
+    } else {
+      critical_error(
+          "(instructions::get_instruction_by_nibble) : Unknow Opcode");
     }
   }
 
-  return INSTRUCTIONS[0];
+  return instr;
 }
