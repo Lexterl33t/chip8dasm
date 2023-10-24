@@ -2,9 +2,8 @@
 
 #include <stdint.h>
 
-typedef struct instruction_s {
+typedef struct {
 
   char *opcode_str;
-  int8_t nibble;
-  struct instruction_s *next;
+  int16_t nibble;
 } instruction_t;

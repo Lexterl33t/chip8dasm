@@ -5,6 +5,7 @@
 
 #include "argparser/argparser.h"
 #include "argparser/errors.h"
+#include "disassembler/instructions.h"
 #include "rom_parsing/rom_parser.h"
 
 int main(int argc, char **argv) {
@@ -28,6 +29,7 @@ int main(int argc, char **argv) {
     open_rom(rom_parser);
     parse_rom(rom_parser);
 
+    printf("Opcode => %d\n", rom_parser->rom_bytes[0]);
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");
