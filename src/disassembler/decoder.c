@@ -15,8 +15,13 @@ instruction_t *decodes(uint16_t *opcodes, uint8_t num_instr) {
   for (int i = 0; i < num_instr; ++i) {
     instrs[i] = get_instruction_by_nibble(TO_LITTLE_ENDIAN_16b(opcodes[i]));
 
-    printf("[%04hx] Instruction => %s\n", TO_LITTLE_ENDIAN_16b(opcodes[i]),
-           instrs[i].opcode_str);
+    if (i == 0)
+      instrs[i].pc = MEMORY_ENTRY_POINT;
+    else
+      instrs[i].pc = instrs[i - 1].pc + 2;
+
+    printf("* 0x%lx | %04x | %s\n", instrs[i].pc,
+           TO_LITTLE_ENDIAN_16b(opcodes[i]), instrs[i].opcode_str);
   }
 
   return instrs;
