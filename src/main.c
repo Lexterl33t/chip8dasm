@@ -5,7 +5,7 @@
 
 #include "argparser/argparser.h"
 #include "argparser/errors.h"
-#include "disassembler/instructions.h"
+#include "disassembler/decoder.h"
 #include "rom_parsing/rom_parser.h"
 #include "utils/utils.h"
 
@@ -30,11 +30,9 @@ int main(int argc, char **argv) {
     open_rom(rom_parser);
     parse_rom(rom_parser);
 
-    printf("Opcode => %d\n", TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[4]));
-    instruction_t instr = get_instruction_by_nibble(
-        TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[1]));
+    instruction_t *instrs =
+        decodes(rom_parser->rom_bytes, rom_parser->number_instr);
 
-    printf("Instruction name => %s\n", instr.opcode_str);
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");
