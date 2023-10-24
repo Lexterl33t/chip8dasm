@@ -1,5 +1,8 @@
 #pragma once
 
+#define TO_LITTLE_ENDIAN_16b(x)                                                \
+  ((__uint16_t)((((x) >> 8) & 0xff) | (((x)&0xff) << 8)))
+
 typedef enum { false, true } bool;
 
 bool is_integer(char *str);
