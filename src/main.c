@@ -31,6 +31,10 @@ int main(int argc, char **argv) {
     parse_rom(rom_parser);
 
     printf("Opcode => %d\n", TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[4]));
+    instruction_t instr = get_instruction_by_nibble(
+        TO_LITTLE_ENDIAN_16b(rom_parser->rom_bytes[0]));
+
+    printf("Instruction name => %s\n", instr.opcode_str);
     if (argument_exist(parser, "--show-type")) {
 
       argument_t *view_type = get_argument(parser, "--show-type");
