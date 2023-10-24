@@ -13,7 +13,6 @@ executable('chip8dasm',
             'src/disassembler/decoder.c',
             'src/disassembler/basic_block.c',
             'src/disassembler/instruction.c',
-            'src/disassembler/instructions.c'
             ],
            include_directories: inc)
 

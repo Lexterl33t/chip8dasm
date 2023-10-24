@@ -6,7 +6,6 @@
 #include "../logging/logger.h"
 #include "../utils/utils.h"
 #include "instruction.h"
-#include "instructions.h"
 
 instruction_t get_instruction_by_nibble(uint16_t opcode) {
 
