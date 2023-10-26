@@ -21,7 +21,7 @@ instruction_t *decodes(uint16_t *opcodes, uint8_t num_instr) {
       instrs[i].pc = instrs[i - 1].pc + 2;
 
     printf("* 0x%lx | %04x | %s\n", instrs[i].pc,
-           TO_LITTLE_ENDIAN_16b(opcodes[i]), instrs[i].opcode_str);
+           TO_LITTLE_ENDIAN_16b(opcodes[i]), instrs[i].operand_str);
   }
 
   return instrs;
