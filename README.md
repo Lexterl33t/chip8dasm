@@ -17,6 +17,7 @@ The chip8dasm disassembler is a powerful tool built in C and designed to help pr
 
 ## TODO
 - **Graph view**
+- **Super chip-48 instruction support**
 
 ## Getting Started
 
