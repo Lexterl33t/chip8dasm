@@ -26,3 +26,8 @@ instruction_t *decodes(uint16_t *opcodes, uint8_t num_instr) {
 
   return instrs;
 }
+
+void free_instructions(instruction_t *instrs) {
+  if (instrs)
+    free(instrs);
+}

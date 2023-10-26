@@ -3,6 +3,10 @@
 #define TO_LITTLE_ENDIAN_16b(x)                                                \
   ((__uint16_t)((((x) >> 8) & 0xff) | (((x)&0xff) << 8)))
 
+#define DEFER(start_code, end_code)                                            \
+  start_code;                                                                  \
+  end_code;
+
 typedef enum { false, true } bool;
 
 bool is_integer(char *str);

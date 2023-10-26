@@ -134,6 +134,8 @@ void print_help(argument_parser_t *ctx) {
       printf("%s : %s : %s\n", it->command_name, it->help, TYPE_STR(it->type));
   })
 
+  free_parser(ctx);
+
   exit(0);
 }
 

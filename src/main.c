@@ -1,15 +1,19 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "argparser/argparser.h"
 #include "argparser/errors.h"
 #include "disassembler/decoder.h"
+#include "disassembler/instruction.h"
 #include "rom_parsing/rom_parser.h"
 #include "utils/utils.h"
 
 int main(int argc, char **argv) {
+
+  instruction_t *instrs;
 
   argument_parser_t *parser = new_parser(
       "Chip8Dasm", "Chip8 disassembler from scratch @Lxt3h", "", argv, argc);
@@ -30,8 +34,7 @@ int main(int argc, char **argv) {
     open_rom(rom_parser);
     parse_rom(rom_parser);
 
-    instruction_t *instrs =
-        decodes(rom_parser->rom_bytes, rom_parser->number_instr);
+    instrs = decodes(rom_parser->rom_bytes, rom_parser->number_instr);
 
     if (argument_exist(parser, "--show-type")) {
 
@@ -48,6 +51,10 @@ int main(int argc, char **argv) {
       // linear view
       printf("Tu as choisis wola la linear view");
     }
+  } else {
+
+    print_help(parser);
   }
+  free_instructions(instrs);
   free_parser(parser);
 }
