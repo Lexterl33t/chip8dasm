@@ -1,6 +1,9 @@
 # chip8dasm - Chip-8 Disassembly
 
+<center>
 ![chip8dasm logo](https://github.com/Lexterl33t/chip8dasm/blob/master/images/logo_2.png)
+</center>
+
 
 chip8dasm is a disassembler for the Chip-8 programming language. It allows you to convert Chip-8 machine code into human-readable assembly code.
 
